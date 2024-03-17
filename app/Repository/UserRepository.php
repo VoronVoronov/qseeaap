@@ -18,12 +18,4 @@ class UserRepository extends BaseRepository
    {
        return User::where('phone', $phone)->first();
    }
-
-   public function create(array $data)
-   {
-        $data['password'] = Hash::isHashed($data['password']) ? $data['password'] : Hash::make($data['password']);
-        $data['registered_at'] = now();
-        $data['register_ip'] = request()->ip();
-        return parent::create($data);
-   }
 }

@@ -27,6 +27,9 @@ class UserService extends BaseService
             throw new ModelNotFoundException(__('user.phone_exists'), ResponseAlias::HTTP_BAD_REQUEST);
         }
         unset($data['password_confirmation']);
+        $data['password'] = Hash::isHashed($data['password']) ? $data['password'] : Hash::make($data['password']);
+        $data['registered_at'] = now()->toDateTimeString();
+        $data['register_ip'] = request()->ip();
         $user = $this->userRepository->create($data);
         $this->codeService->sendCode($data['phone']);
         return $user->createToken('auth-access-token')->accessToken;
@@ -39,7 +42,7 @@ class UserService extends BaseService
             throw new ModelNotFoundException(__('user.not_found'), ResponseAlias::HTTP_BAD_REQUEST);
         }
         if (Hash::check($data['password'], $user->getAuthPassword())){
-            $user->last_login_at = now();
+            $user->last_login_at = now()->toDateTimeString();
             $user->last_login_ip = request()->ip();
             $user->save();
             $user->tokens()->delete();
@@ -55,7 +58,7 @@ class UserService extends BaseService
         if($status){
             $user = $this->userRepository->findByPhone($data['phone']);
             $user->is_active = true;
-            $user->phone_verified_at = now();
+            $user->phone_verified_at = now()->toDateTimeString();
             $user->save();
         }
         return $status;
