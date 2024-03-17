@@ -14,9 +14,6 @@ class MenuResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        unset($request['permissions']);
-        unset($request['roles']);
-        unset($request['pivot']);
         return parent::toArray($request);
     }
 }
