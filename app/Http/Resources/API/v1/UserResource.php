@@ -14,10 +14,6 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $user = parent::toArray($request);
-        unset($user['permissions']);
-        unset($user['roles']);
-        unset($user['pivot']);
-        return $user;
+        return parent::toArray($request);
     }
 }
