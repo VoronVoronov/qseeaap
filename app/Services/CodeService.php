@@ -25,11 +25,6 @@ class CodeService extends BaseService
     {
         $code = rand(1000, 9999);
         $message = "Ваш код подтверждения QSee: " . $code;
-//        $id = $this->smsCenter($phone, $message);
-//        if($id == 0){
-//            $message .= ' QSee';
-//            $id = $this->Mobizon($phone, $message);
-//        }
         $id = $this->Mobizon($phone, $message);
         if ($id == 0) {
             throw new ModelNotFoundException(__('user.sms_not_sent'), ResponseAlias::HTTP_BAD_REQUEST);
