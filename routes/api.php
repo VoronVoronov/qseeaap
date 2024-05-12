@@ -16,26 +16,3 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::group([
-    'prefix' => 'v1',
-], function () {
-    Route::group([
-        'prefix' => 'user',
-    ], function () {
-        Route::post('register', [UserController::class, 'register']);
-        Route::post('login', [UserController::class, 'login']);
-        Route::middleware(['auth:api'])->group(function () {
-            Route::post('check-code', [UserController::class, 'checkCode']);
-            Route::post('logout', [UserController::class, 'logout']);
-            Route::middleware(['check.active'])->group(function () {
-                Route::get('me', [UserController::class, 'getUser'])->name('getUser');
-                Route::apiResources([
-                    'menu' => MenuController::class,
-                    'category' => CategoryController::class,
-                    'product' => ProductController::class,
-                ]);
-            });
-        });
-    });
-});

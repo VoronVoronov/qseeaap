@@ -5,8 +5,9 @@ namespace App\Services;
 use App\Repository\UserRepository;
 use App\Services\Base\BaseService;
 use GuzzleHttp\Exception\GuzzleException;
+use Hash;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Hash;
+
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
