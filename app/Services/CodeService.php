@@ -21,8 +21,12 @@ class CodeService extends BaseService
     /**
      * @throws GuzzleException
      */
-    public function sendCode(string $phone): int
+    public function sendCode(string $phone, $action = 'register'): int
     {
+        $lastCode = $this->codeRepository->getByPhone($phone);
+        if ($lastCode && $lastCode->expired_at > Carbon::now()) {
+            return -1;
+        }
         $code = rand(1000, 9999);
         $message = "Ваш код подтверждения QSee: " . $code;
         $id = $this->Mobizon($phone, $message);
@@ -34,7 +38,8 @@ class CodeService extends BaseService
             'code' => $code,
             'expired_at' => Carbon::now()->addMinutes(5),
             'message' => $message,
-            'sms_id' => $id
+            'sms_id' => $id,
+            'action' => $action,
         );
         unset($data['message']);
         $this->codeRepository->create($data);

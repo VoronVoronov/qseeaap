@@ -65,6 +65,17 @@ class UserService extends BaseService
         return $status;
     }
 
+    public function sendSMS(array $data): array
+    {
+        $id = $this->codeService->sendCode($data['phone']);
+        if($id == -1){
+            throw new ModelNotFoundException(__('user.sms_already_sent'), ResponseAlias::HTTP_BAD_REQUEST);
+        }else if ($id == 0) {
+            throw new ModelNotFoundException(__('user.sms_not_sent'), ResponseAlias::HTTP_BAD_REQUEST);
+        }
+        return ['sms_id' => $id, 'message' => __('user.sms_sent')];
+    }
+
     public function logout($user): bool
     {
         return $user->tokens()->delete();

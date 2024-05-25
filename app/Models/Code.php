@@ -5,9 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * @method static where(string $string, string $phone)
- */
 class Code extends Model
 {
     use HasFactory;

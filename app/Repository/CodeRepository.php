@@ -16,4 +16,13 @@ class CodeRepository extends BaseRepository
     {
         return Code::where('phone', $phone)->latest()->first();
     }
+
+    public function create(array $data)
+    {
+        Code::where('phone', $data['phone'])
+            ->where('action', 'register')
+            ->where('is_used', 0)
+            ->update(['is_used' => 1]);
+        return parent::create($data);
+    }
 }

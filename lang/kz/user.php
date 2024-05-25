@@ -18,4 +18,6 @@ return [
     'not_activated' => '',
     'code_not_valid' => '',
     'sms_not_sent' => '',
+    'sms_sent' => '',
+    'sms_already_sent' => '',
 ];

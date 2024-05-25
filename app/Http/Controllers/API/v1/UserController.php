@@ -33,6 +33,11 @@ class UserController extends Controller
         return $this->sendResponse(['status' => $this->service->checkCode($request->all())]);
     }
 
+    public function sendSms(Request $request)
+    {
+        return $this->sendResponse($this->service->sendSMS($request->all()));
+    }
+
     public function show(User $user)
     {
         return UserResource::make($user);

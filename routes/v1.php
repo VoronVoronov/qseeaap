@@ -14,6 +14,7 @@ Route::group([
     Route::post('login', [UserController::class, 'login']);
     Route::middleware(['auth:api'])->group(function () {
         Route::post('check-code', [UserController::class, 'checkCode']);
+        Route::post('send-sms', [UserController::class, 'sendSms']);
         Route::post('logout', [UserController::class, 'logout']);
         Route::middleware(['check.active'])->group(function () {
             Route::get('me', [UserController::class, 'getUser'])->name('getUser');
