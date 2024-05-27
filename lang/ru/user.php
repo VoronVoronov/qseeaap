@@ -20,7 +20,7 @@ return [
     'sms_not_sent' => 'СМС не отправлено',
     'sms_sent' => 'СМС отправлено',
     'sms_already_sent' => 'СМС уже отправлено. Попробуйте через 5 минут',
-    'your_sms_code' => "Ваш код подтверждения: :code.\nQSee",
+    'your_sms_code' => "Ваш код подтверждения: :code \nQSee",
     'password_reset' => 'Новый пароль отправлен на ваш номер телефона',
-    'your_new_password' => "Ваш новый пароль: :password.\nQSee",
+    'your_new_password' => "Ваш новый пароль: :password \nQSee",
 ];
