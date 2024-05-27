@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\v1\User\RegisterRequest;
 use App\Http\Requests\API\v1\User\LoginRequest;
 use App\Http\Requests\API\v1\User\CheckCodeRequest;
+use App\Http\Requests\API\v1\User\ResetPasswordRequest;
 use App\Services\UserService;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Resources\API\v1\UserResource;
@@ -18,6 +20,9 @@ class UserController extends Controller
         private readonly UserService $service
     ) {}
 
+    /**
+     * @throws GuzzleException
+     */
     public function register(RegisterRequest $request): JsonResponse
     {
         return $this->sendResponse(['token' => $this->service->register($request->all())]);
@@ -26,6 +31,11 @@ class UserController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         return $this->sendResponse(['token' => $this->service->login($request->all())]);
+    }
+
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        return $this->sendResponse($this->service->resetPassword($request->all()));
     }
 
     public function checkCode(CheckCodeRequest $request): JsonResponse
@@ -38,13 +48,13 @@ class UserController extends Controller
         return $this->sendResponse($this->service->sendSMS($request->all()));
     }
 
-    public function show(User $user)
+    public function show(User $user): UserResource
     {
         return UserResource::make($user);
     }
 
 
-    public function getUser(Request $request)
+    public function getUser(Request $request): UserResource
     {
         return $this->show($request->user());
     }

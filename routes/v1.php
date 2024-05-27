@@ -12,6 +12,7 @@ Route::group([
 ], function () {
     Route::post('register', [UserController::class, 'register']);
     Route::post('login', [UserController::class, 'login']);
+    Route::post('reset-password', [UserController::class, 'resetPassword']);
     Route::middleware(['auth:api'])->group(function () {
         Route::post('check-code', [UserController::class, 'checkCode']);
         Route::post('send-sms', [UserController::class, 'sendSms']);

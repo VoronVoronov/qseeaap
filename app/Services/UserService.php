@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+use function Laravel\Prompts\password;
 
 class UserService extends BaseService
 {
@@ -32,7 +33,9 @@ class UserService extends BaseService
         $data['registered_at'] = now()->toDateTimeString();
         $data['register_ip'] = request()->ip();
         $user = $this->userRepository->create($data);
-        $this->codeService->sendCode($data['phone']);
+        $data['code'] = rand(1000, 9999);
+        $data['message'] = __('user.your_sms_code', ['code' => $data['code']]);
+        $this->codeService->sendCode($data);
         return $user->createToken('auth-access-token')->accessToken;
     }
 
@@ -79,5 +82,27 @@ class UserService extends BaseService
     public function logout($user): bool
     {
         return $user->tokens()->delete();
+    }
+
+    public function resetPassword(array $all): array
+    {
+        $user = $this->userRepository->findByPhone($all['phone']);
+        if(!$user){
+            throw new ModelNotFoundException(__('user.not_found'), ResponseAlias::HTTP_BAD_REQUEST);
+        }
+        $password = \Str::password(8);
+        $arr = array(
+            'phone' => $all['phone'],
+            'code' => $password,
+            'message' => __('user.your_new_password', ['password' => $password]),
+        );
+        $id = $this->codeService->sendCode($arr, 'reset_password');
+        if($id == -1){
+            throw new ModelNotFoundException(__('user.sms_already_sent'), ResponseAlias::HTTP_BAD_REQUEST);
+        }else if ($id == 0) {
+            throw new ModelNotFoundException(__('user.sms_not_sent'), ResponseAlias::HTTP_BAD_REQUEST);
+        }
+        $this->userRepository->update($user->id, ['password' => Hash::make($password)]);
+        return ['sms_id' => $id, 'message' => __('user.password_reset')];
     }
 }

@@ -20,4 +20,7 @@ return [
     'sms_not_sent' => '',
     'sms_sent' => '',
     'sms_already_sent' => '',
+    'your_sms_code' => '',
+    'password_reset' => '',
+    'your_new_password' => '',
 ];

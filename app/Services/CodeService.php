@@ -21,28 +21,26 @@ class CodeService extends BaseService
     /**
      * @throws GuzzleException
      */
-    public function sendCode(string $phone, $action = 'register'): int
+    public function sendCode($data, $action = 'register'): int
     {
-        $lastCode = $this->codeRepository->getByPhone($phone);
+        $lastCode = $this->codeRepository->getByPhone($data['phone']);
         if ($lastCode && $lastCode->expired_at > Carbon::now()) {
             return -1;
         }
-        $code = rand(1000, 9999);
-        $message = "Ваш код подтверждения QSee: " . $code;
-        $id = $this->Mobizon($phone, $message);
+        $id = $this->Mobizon($data['phone'], $data['message']);
         if ($id == 0) {
             throw new ModelNotFoundException(__('user.sms_not_sent'), ResponseAlias::HTTP_BAD_REQUEST);
         }
-        $data = array(
-            'phone' => $phone,
-            'code' => $code,
+        if($action === 'reset_password'){
+            $data['code'] = 'Password is hashed';
+        }
+        $this->codeRepository->create(array(
+            'phone' => $data['phone'],
+            'code' => $data['code'],
             'expired_at' => Carbon::now()->addMinutes(5),
-            'message' => $message,
             'sms_id' => $id,
             'action' => $action,
-        );
-        unset($data['message']);
-        $this->codeRepository->create($data);
+        ));
         return $id;
     }
 

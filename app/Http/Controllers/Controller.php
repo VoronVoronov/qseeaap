@@ -12,12 +12,12 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    public function sendResponse(array $data, int $customStatus = Response::HTTP_OK): JsonResponse
+    public function sendResponse(array $data, int $customStatus = Response::HTTP_OK)
     {
         return response()->json($data, $customStatus);
     }
 
-    public function sendErrorResponse(array $data, int $code = Response::HTTP_BAD_REQUEST): JsonResponse
+    public function sendErrorResponse(array $data, int $code = Response::HTTP_BAD_REQUEST)
     {
         return response()->json($data, $code);
     }
