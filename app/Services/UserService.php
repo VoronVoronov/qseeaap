@@ -50,6 +50,9 @@ class UserService extends BaseService
             $user->last_login_ip = request()->ip();
             $user->save();
             $user->tokens()->delete();
+            if($data['remember']){
+                $user->setRememberToken($user->id);
+            }
             return $user->createToken("auth-access-token")->accessToken;
         }else{
             throw new InvalidArgumentException(__('user.wrong_password'), ResponseAlias::HTTP_BAD_REQUEST);
@@ -70,7 +73,7 @@ class UserService extends BaseService
 
     public function sendSMS(array $data): array
     {
-        $id = $this->codeService->sendCode($data['phone']);
+        $id = $this->codeService->sendCode($data);
         if($id == -1){
             throw new ModelNotFoundException(__('user.sms_already_sent'), ResponseAlias::HTTP_BAD_REQUEST);
         }else if ($id == 0) {

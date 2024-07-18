@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Permission\Models\Role as SpatieRole;
-use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @method static where(string $string, mixed $user_id)
@@ -25,6 +23,16 @@ class Menu extends Model
         'logo',
         'banner'
     ];
+
+    public function getLogoAttribute($value)
+    {
+        return $value ? \Storage::disk('s3')->url($value) : null;
+    }
+
+    public function getBannerAttribute($value)
+    {
+        return $value ? \Storage::disk('s3')->url($value) : null;
+    }
 
     public function user()
     {

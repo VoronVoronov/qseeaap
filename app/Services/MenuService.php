@@ -46,11 +46,15 @@ class MenuService extends BaseService
             throw new ModelNotFoundException('Access denied!', ResponseAlias::HTTP_BAD_REQUEST);
         }
         if(isset($data['logo'])) {
-            $this->deleteS3($old->logo);
+            if($old->logo !== null) {
+                $this->deleteS3($old->logo);
+            }
             $data['logo'] = $this->uploadS3($data['logo'], 'logo');
         }
         if(isset($data['banner'])) {
-            $this->deleteS3($old->banner);
+            if($old->banner !== null) {
+                $this->deleteS3($old->banner);
+            }
             $data['banner'] = $this->uploadS3($data['banner'], 'banner');
         }
         $data['slug'] = Str::slug($data['name']);
@@ -70,6 +74,38 @@ class MenuService extends BaseService
             $this->deleteS3($menu->banner);
         }
         return $this->menuRepository->delete($id);
+    }
+
+    public function upload(Menu $menu, $type, $file)
+    {
+        if($type === 'logo') {
+            if($menu->logo !== null) {
+                $this->deleteS3($menu->logo);
+            }
+            $path = $this->uploadS3($file, 'logo');
+            $menu->logo = $path;
+        }else{
+            if($menu->banner !== null) {
+                $this->deleteS3($menu->banner);
+            }
+            $path = $this->uploadS3($file, 'banner');
+            $menu->banner = $path;
+        }
+        $menu->save();
+        return $path;
+    }
+
+    public function delete(Menu $menu, $type)
+    {
+        if($type === 'logo') {
+            $this->deleteS3($menu->logo);
+            $menu->logo = null;
+        }else{
+            $this->deleteS3($menu->banner);
+            $menu->banner = null;
+        }
+        $menu->save();
+        return $menu;
     }
 
 }

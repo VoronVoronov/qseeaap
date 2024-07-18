@@ -3,8 +3,6 @@
 namespace App\Http;
 
 use App\Http\Middleware\Locale;
-use App\Http\Middleware\RequestSignature;
-use App\Http\Middleware\ValidateSignature;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel

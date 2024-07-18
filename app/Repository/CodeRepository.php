@@ -14,7 +14,10 @@ class CodeRepository extends BaseRepository
 
     public function getByPhone(string $phone)
     {
-        return Code::where('phone', $phone)->latest()->first();
+        return Code::where('phone', $phone)
+            ->where('is_used', 0)
+            ->orderBy('created_at', 'desc')
+            ->first();
     }
 
     public function create(array $data)
