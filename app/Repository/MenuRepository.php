@@ -26,20 +26,20 @@ class MenuRepository extends BaseRepository
 
     public function store(array $data)
     {
-        $data['slug'] = $this->checkSlug($data['name']);
+        $data['slug'] = $this->checkSlug($data['name'], 0);
         return $this->create($data);
     }
 
     public function updateMenu(int $id, array $data): Menu
     {
-        $data['slug'] = $this->checkSlug($data['name']);
+        $data['slug'] = $this->checkSlug($data['name'], $id);
         return $this->update($id, $data);
     }
 
-    private function checkSlug($name): string
+    private function checkSlug($name, $id): string
     {
         $slug = Str::slug($name);
-        $count = Menu::where('slug', $slug)->count();
+        $count = Menu::where('slug', $slug)->where('id', '!=', $id)->count();
         if($count > 0) {
             $slug = $slug . '-' . time();
         }

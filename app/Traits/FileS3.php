@@ -2,11 +2,11 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Facades\Storage;
+use Storage;
 
 trait FileS3
 {
-    public function uploadS3($file, $path)
+    public function uploadS3($file, $path): string
     {
         $name = md5(time(). $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
         $filePath = 'media/'.$path . '/' . $name;
