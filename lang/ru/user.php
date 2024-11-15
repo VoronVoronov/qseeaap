@@ -23,4 +23,5 @@ return [
     'your_sms_code' => "Ваш код подтверждения: :code \nQSee",
     'password_reset' => 'Новый пароль отправлен на ваш номер телефона',
     'your_new_password' => "Ваш новый пароль: :password \nQSee",
+    'phone_verified' => 'Телефон подтвержден',
 ];

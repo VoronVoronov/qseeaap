@@ -38,18 +38,23 @@ trait SMS
      */
     public function Mobizon($phone, $message): int
     {
-        $url = 'https://api.mobizon.kz/service/message/SendSmsMessage?output=json&api=v1&apiKey='.env('MOBIZON_API_KEY');
+        $url = 'https://api.mobizon.kz/service/message/SendSmsMessage?output=json&api=v1&apiKey='.config('app.MOBIZON_API_KEY');
         $client = new Client();
         $response = $client->request('POST', $url, [
             'form_params' => [
                 'recipient' => $phone,
                 'text' => $message,
+            ],
+            'headers' => [
+                'cache-control' => 'no-cache',
+                'content-type' => 'application/x-www-form-urlencoded',
             ]
         ]);
         $result = json_decode($response->getBody()->getContents());
         if(isset($result->data->messageId)){
             return $result->data->messageId;
         }
+        file_put_contents(storage_path('logs/mobizon.log'), $response->getBody());
         return 0;
     }
 

@@ -30,7 +30,7 @@ class UserController extends Controller
 
     public function login(LoginRequest $request): JsonResponse
     {
-        return $this->sendResponse(['token' => $this->service->login($request->all())]);
+        return $this->sendResponse($this->service->login($request->all()));
     }
 
     public function resetPassword(ResetPasswordRequest $request)
@@ -40,7 +40,7 @@ class UserController extends Controller
 
     public function checkCode(CheckCodeRequest $request): JsonResponse
     {
-        return $this->sendResponse(['status' => $this->service->checkCode($request->all())]);
+        return $this->sendResponse($this->service->checkCode($request->all()));
     }
 
     public function sendSms(Request $request)

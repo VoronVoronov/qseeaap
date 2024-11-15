@@ -23,4 +23,5 @@ return [
     'your_sms_code' => '',
     'password_reset' => '',
     'your_new_password' => '',
+    'phone_verified' => '',
 ];

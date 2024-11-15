@@ -185,4 +185,8 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+
+
+    'MOBIZON_API_KEY' => env('MOBIZON_API_KEY'),
+
 ];

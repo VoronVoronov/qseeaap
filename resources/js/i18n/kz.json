@@ -1,0 +1,35 @@
+{
+    "auth": {
+        "login": "",
+        "register": "",
+        "logout": "",
+        "form": {
+            "name": "",
+            "email": "",
+            "phone": "",
+            "password": "",
+            "password_confirmation": "",
+            "remember_me": "",
+            "forgot_password": "",
+            "reset_password": "",
+            "register_btn": "",
+            "login_btn": ""
+        }
+    },
+    "navigation": {
+        "home": "",
+        "pages": "",
+        "logout": ""
+    },
+    "sms": {
+        "user_activate": {
+            "title": "",
+            "text": ""
+        },
+        "need_code": "",
+        "resend_code": ""
+    },
+    "system": {
+        "error": ""
+    }
+}

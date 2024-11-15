@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Storage;
+use Carbon\Carbon;
 
 class Menu extends Model
 {
@@ -23,12 +25,24 @@ class Menu extends Model
 
     public function getLogoAttribute($value)
     {
-        return $value ? \Storage::disk('s3')->url($value) : null;
+        if ($value) {
+            $disk = Storage::disk('s3');
+            $expiration = Carbon::now()->addMinutes(10); // Set the expiration time for the signed URL
+            return $disk->temporaryUrl($value, $expiration);
+        }
+
+        return null;
     }
 
     public function getBannerAttribute($value)
     {
-        return $value ? \Storage::disk('s3')->url($value) : null;
+        if ($value) {
+            $disk = Storage::disk('s3');
+            $expiration = Carbon::now()->addMinutes(10); // Set the expiration time for the signed URL
+            return $disk->temporaryUrl($value, $expiration);
+        }
+
+        return null;
     }
 
     public function user()

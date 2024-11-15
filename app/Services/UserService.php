@@ -39,7 +39,7 @@ class UserService extends BaseService
         return $user->createToken('auth-access-token')->accessToken;
     }
 
-    public function login(array $data): string
+    public function login(array $data): array
     {
         $user = $this->userRepository->findByPhone($data['phone']);
         if(!$user) {
@@ -53,13 +53,13 @@ class UserService extends BaseService
             if($data['remember']){
                 $user->setRememberToken($user->id);
             }
-            return $user->createToken("auth-access-token")->accessToken;
+            return ['token' => $user->createToken("auth-access-token")->accessToken, 'user' => $user];
         }else{
             throw new InvalidArgumentException(__('user.wrong_password'), ResponseAlias::HTTP_BAD_REQUEST);
         }
     }
 
-    public function checkCode(array $data): bool
+    public function checkCode(array $data): array
     {
         $status = $this->codeService->checkCode($data);
         if($status){
@@ -68,11 +68,13 @@ class UserService extends BaseService
             $user->phone_verified_at = now()->toDateTimeString();
             $user->save();
         }
-        return $status;
+        return ['status' => $status, 'message' => __('user.phone_verified')];
     }
 
     public function sendSMS(array $data): array
     {
+        $data['code'] = rand(1000, 9999);
+        $data['message'] = __('user.your_sms_code', ['code' => $data['code']]);
         $id = $this->codeService->sendCode($data);
         if($id == -1){
             throw new ModelNotFoundException(__('user.sms_already_sent'), ResponseAlias::HTTP_BAD_REQUEST);

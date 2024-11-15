@@ -13,6 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group([
+    'prefix' => 'cabinet'
+], function () {
+    Route::get('{any}', function () {
+        return view('cabinet');
+    })->where('any', '.*');
 });
+
+Route::domain('cabinet.' . env('APP_URL'))->group(function () {
+    Route::get('{any}', function () {
+        return view('cabinet');
+    })->where('any', '.*');
+});
+
+Route::get('{any}', function () {
+    return view('cabinet');
+})->where('any', '.*');

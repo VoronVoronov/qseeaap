@@ -17,8 +17,8 @@ Route::group([
         Route::post('check-code', [UserController::class, 'checkCode']);
         Route::post('send-sms', [UserController::class, 'sendSms']);
         Route::post('logout', [UserController::class, 'logout']);
+        Route::get('me', [UserController::class, 'getUser'])->name('getUser');
         Route::middleware(['check.active'])->group(function () {
-            Route::get('me', [UserController::class, 'getUser'])->name('getUser');
             Route::post('menu/upload', [MenuController::class, 'upload']);
             Route::delete('menu/delete/{menu_id}/{type}', [MenuController::class, 'delete']);
             Route::apiResources([
