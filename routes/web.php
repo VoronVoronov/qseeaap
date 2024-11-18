@@ -17,13 +17,13 @@ if(env('APP_ENV') !== 'local') {
     Route::get('/', function () {
         return view('welcome');
     });
-}
 
-Route::domain('cabinet.' . env('APP_URL'))->group(function () {
-    Route::get('{any}', function () {
-        return view('cabinet');
-    })->where('any', '.*');
-});
+    Route::domain('cabinet.' . env('APP_URL'))->group(function () {
+        Route::get('{any}', function () {
+            return view('cabinet');
+        })->where('any', '.*');
+    });
+}
 
 Route::get('{any}', function () {
     return view('cabinet');
