@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name') }}</title>
-    @vite('resources/js/app.js')
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
+    <script src="https://widget.tiptoppay.kz/bundles/widget.js"></script>
 </head>
 <body>
     <div id="app">
@@ -13,5 +14,4 @@
         </noscript>
     </div>
 </body>
-<script src="https://widget.tiptoppay.kz/bundles/widget.js"></script>
 </html>
