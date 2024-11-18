@@ -13,4 +13,5 @@
         </noscript>
     </div>
 </body>
+<script src="https://widget.tiptoppay.kz/bundles/widget.js"></script>
 </html>
