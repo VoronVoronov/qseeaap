@@ -54,7 +54,7 @@ onUnmounted(() => {
 
 <style scoped>
 .custom-alert {
-    position: absolute;
+    position: fixed;
     right: 5px;
     font-size: 16px;
     z-index: 9999999;

@@ -76,36 +76,4 @@ class MenuService extends BaseService
         return $this->menuRepository->delete($id);
     }
 
-    public function upload(Menu $menu, $type, $file)
-    {
-        if($type === 'logo') {
-            if($menu->logo !== null) {
-                $this->deleteS3($menu->logo);
-            }
-            $path = $this->uploadS3($file, 'logo');
-            $menu->logo = $path;
-        }else{
-            if($menu->banner !== null) {
-                $this->deleteS3($menu->banner);
-            }
-            $path = $this->uploadS3($file, 'banner');
-            $menu->banner = $path;
-        }
-        $menu->save();
-        return $path;
-    }
-
-    public function delete(Menu $menu, $type)
-    {
-        if($type === 'logo') {
-            $this->deleteS3($menu->logo);
-            $menu->logo = null;
-        }else{
-            $this->deleteS3($menu->banner);
-            $menu->banner = null;
-        }
-        $menu->save();
-        return $menu;
-    }
-
 }

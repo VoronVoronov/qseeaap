@@ -4,7 +4,8 @@ import HomeView from './Pages/HomeView.vue';
 import AboutView from './Pages/AboutView.vue';
 import Register from "./Pages/Auth/Register.vue";
 import Login from "./Pages/Auth/Login.vue";
-import Menu from "./Pages/MenuView.vue";
+import Menu from "./Pages/Menu/MenuView.vue";
+import MenuEdit from "./Pages/Menu/MenuEdit.vue";
 
 const routes = [
     {
@@ -43,6 +44,14 @@ const routes = [
         path: '/menu',
         name: 'menu',
         component: Menu,
+        meta: {
+            isAuth: true
+        }
+    },
+    {
+        path: '/menu/:id',
+        name: 'menu.edit',
+        component: MenuEdit,
         meta: {
             isAuth: true
         }

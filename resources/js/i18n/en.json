@@ -31,5 +31,36 @@
     },
     "system": {
         "error": ""
+    },
+    "menu": {
+        "action": {
+            "edit": "",
+            "delete": "",
+            "create": "",
+            "cancel": "",
+            "save": ""
+        },
+        "empty": {
+            "title": "",
+            "text": ""
+        },
+        "form": {
+            "name": "",
+            "description": "",
+            "logo": "",
+            "change_logo": ""
+        },
+        "alert": {
+            "success_created": "",
+            "success_updated": "",
+            "success_deleted": "",
+            "error_created": "",
+            "error_updated": ""
+        },
+        "tab": {
+            "mainSettings": "",
+            "categories": "",
+            "products": ""
+        }
     }
 }

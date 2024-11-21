@@ -10,7 +10,7 @@
     >
         <v-app-bar v-if="isAuthenticated" app dark color="primary">
             <v-toolbar-title>
-                <img src="logo.png" alt="logo">
+                <img src="/logo.png" alt="logo">
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon @click="toggleDrawer" v-if="smAndDown">
@@ -33,7 +33,7 @@
                     :key="i"
                     :value="item"
                     color="white"
-                    :active="item.name === router.currentRoute.value.name"
+                    :active="router.currentRoute.value.name.startsWith(item.name)"
                     @click="handleClick(item.link)"
                 >
                     <template v-slot:prepend>

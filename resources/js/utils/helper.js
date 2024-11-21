@@ -1,73 +1,57 @@
-import axios from 'axios'
-import router from '../router'
-import i18n from '../i18n'
+import axios from 'axios';
+import router from '../router';
+import i18n from '../i18n';
 
-const url_api = 'http://127.0.0.1:8000/api/v1/'
-let token = localStorage.getItem('token')
+const url_api = 'http://127.0.0.1:8000/api/v1/';
 
-const headers = {
-    Authorization: `Bearer ${token}`,
-    Locale: i18n.global.locale
-}
+const getHeaders = () => ({
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+    Locale: i18n.global.locale,
+});
 
-let axiosRequest = function (url, data, json) {
-    let token = localStorage.getItem('token')
-    const headers = {
-        Authorization: `Bearer ${token}`,
-        Locale: i18n.global.locale
-    }
-    let config = {
-        headers: headers
-    }
-    url = `${url_api}${url}`
-    axios
-        .post(url, data, config)
-        .then((response) => {
-            return json(response.data)
-        })
-        .catch((error) => {
-            return json(error.response)
-        })
-}
+const handleResponse = (promise, json) => {
+    promise
+        .then((response) => json(response.data))
+        .catch((error) => json(error.response?.data || error));
+};
 
-let axiosGetRequest = function (url, json, params = null) {
+const axiosRequest = (url, data, json) => {
+    const headers = getHeaders();
+    handleResponse(
+        axios.post(`${url_api}${url}`, data, { headers }),
+        json
+    );
+};
+
+const axiosGetRequest = (url, json, params = null) => {
+    const token = localStorage.getItem('token');
     if (!token) {
-        router.push({ name: 'login' })
-        return
+        router.push({ name: 'login' });
+        return;
     }
-    url = `${url_api}${url}`
-    axios
-        .get(url, {
-            headers: headers,
-            params
-        })
-        .then((response) => {
-            return json(response.data)
-        })
-        .catch((error) => {
-            return json(error.response)
-        })
-}
 
-let axiosPutRequest = function (url, body, json) {
-    url = `${url_api}${url}`
-    axios
-        .put(url, body, { headers: headers })
-        .then((response) => {
-            return json(response.data)
-        })
-        .catch((error) => {
-            return json(error.response.data)
-        })
-}
+    const headers = getHeaders();
+    handleResponse(
+        axios.get(`${url_api}${url}`, { headers, params }),
+        json
+    );
+};
 
-let axiosDeleteRequest = function (url, json) {
-    url = `${url_api}${url}`
-    axios
-        .delete(url, { headers: headers })
-        .then((response) => {
-            return json(response.data)
-        })
-}
+const axiosPutRequest = (url, body, json) => {
+    const headers = getHeaders();
 
-export { axiosRequest, axiosGetRequest, axiosPutRequest, axiosDeleteRequest, url_api }
+    handleResponse(
+        axios.put(`${url_api}${url}`, body, { headers }),
+        json
+    );
+};
+
+const axiosDeleteRequest = (url, json) => {
+    const headers = getHeaders();
+    handleResponse(
+        axios.delete(`${url_api}${url}`, { headers }),
+        json
+    );
+};
+
+export { axiosRequest, axiosGetRequest, axiosPutRequest, axiosDeleteRequest, url_api };
