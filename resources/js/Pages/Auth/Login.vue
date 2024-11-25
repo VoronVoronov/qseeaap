@@ -70,8 +70,8 @@ const authStore = useAuthStore()
 const visible = ref(false)
 
 const initialState = {
-    phone: '+77066011100',
-    password: 'dastan@zholdas.icu',
+    phone: '',
+    password: '',
     remember: false,
 }
 
