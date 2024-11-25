@@ -2,7 +2,7 @@
     <v-btn v-if="menu.length > 0" class="mb-5" color="primary" @click="showMenuDialog = true">{{ $t("menu.action.create") }}</v-btn>
     <div class="d-flex justify-content-between gap-10 flex-wrap">
         <template v-for="item in menu">
-            <card :item="item" @deleteMenu="handleGetMenu" />
+            <MenuCard :item="item" @deleteMenu="handleGetMenu" />
         </template>
         <v-card v-if="menu.length == 0">
             <v-card-title>{{ $t("menu.empty.title") }}</v-card-title>
@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import Card from '../../components/menu/card.vue'
+import MenuCard from '../../components/menu/card.vue'
 import AddDialog from '../../components/menu/add/dialog.vue'
 import { ref, onMounted } from 'vue';
 import { axiosGetRequest } from "../../utils/helper";

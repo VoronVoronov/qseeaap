@@ -18,7 +18,7 @@
                     outlined
                 />
                 <v-img class="mb-5" v-if="menu.preview" :src="menu.preview" width="150" height="150"></v-img>
-                <input type="file" style="display: none" ref="file" accept="image/png, image/jpeg" @change="onFileChange" />
+                <input type="file" style="display: none" ref="file" accept="image/png, image/jpeg, image/jpg" @change="onFileChange" />
                 <v-btn @click="$refs.file.click()" color="primary">{{ $t('menu.form.logo') }}</v-btn>
             </v-card-text>
             <v-card-actions>
@@ -48,6 +48,7 @@ interface MenuItem {
 const showMenuDialog = ref(false);
 const emit = defineEmits(['showMenuDialog', 'getMenu'])
 const alertStore = useAlertStore()
+let selectedFile = reactive<File | null>(null);
 const menu = reactive<MenuItem>({
     id: 0,
     name: '',
@@ -73,7 +74,9 @@ function addMenu() {
     let form = new FormData();
     form.append('name', menu.name);
     form.append('description', menu.description);
-    form.append('logo', menu.logo);
+    if (selectedFile instanceof File) {
+        form.append('logo', selectedFile);
+    }
     axiosRequest('user/menu', form, (json) => {
         if(json.id){
             alertStore.showAlert(i18n.global.t("menu.alert.success_created"), 'success', 'mdi-check')
@@ -86,7 +89,6 @@ function addMenu() {
 }
 
 function onFileChange(file: File | Event) {
-    let selectedFile: File | null = null;
 
     if (file instanceof Event) {
         const input = file.target as HTMLInputElement;

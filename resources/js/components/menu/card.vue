@@ -2,6 +2,7 @@
     <v-card
         width="340"
         hover
+        @click="editMenu(item.id)"
     >
         <v-img
             height="250"

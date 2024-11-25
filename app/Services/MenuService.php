@@ -47,16 +47,14 @@ class MenuService extends BaseService
             throw new ModelNotFoundException('Access denied!', ResponseAlias::HTTP_BAD_REQUEST);
         }
         if(isset($data['logo'])) {
-            if($old->logo !== null) {
-                $this->deleteS3($old->logo);
+            if($old->logo !== $data['logo']) {
+                $data['logo'] = $this->uploadS3($data['logo'], 'logo');
             }
-            $data['logo'] = $this->uploadS3($data['logo'], 'logo');
         }
         if(isset($data['banner'])) {
-            if($old->banner !== null) {
-                $this->deleteS3($old->banner);
+            if($old->banner !== $data['banner']) {
+                $data['banner'] = $this->uploadS3($data['banner'], 'banner');
             }
-            $data['banner'] = $this->uploadS3($data['banner'], 'banner');
         }
         $data['slug'] = Str::slug($data['name']);
         return $this->menuRepository->updateMenu($id, $data);

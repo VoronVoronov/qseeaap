@@ -23,8 +23,8 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'logo' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
+            'banner' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 }

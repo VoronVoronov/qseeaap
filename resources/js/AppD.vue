@@ -57,7 +57,7 @@
                     :key="i"
                     :value="item"
                     color="primary"
-                    :active="item.name === router.currentRoute.value.name"
+                    :active="router.currentRoute.value.name.startsWith(item.name)"
                     @click="handleClick(item.link)"
                 >
                     <template v-slot:prepend>
