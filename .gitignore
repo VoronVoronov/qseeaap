@@ -21,3 +21,4 @@ package-lock.json
 # Project exclude paths
 /storage/app/
 /storage/framework/
+composer.lock
