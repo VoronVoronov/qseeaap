@@ -7,6 +7,7 @@ use App\Http\Requests\API\v1\Menu\StoreRequest;
 use App\Http\Requests\API\v1\Menu\UpdateRequest;
 use App\Http\Resources\API\v1\MenuResource;
 use App\Services\MenuService;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class MenuController extends Controller
 {
@@ -19,7 +20,7 @@ class MenuController extends Controller
         return MenuResource::make($this->menuService->index());
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): JsonResponse
     {
         $menu = $this->menuService->store($request->all());
 
@@ -28,12 +29,12 @@ class MenuController extends Controller
         ]);
     }
 
-    public function show(string $id)
+    public function show(int $id)
     {
         return MenuResource::make($this->menuService->show($id));
     }
 
-    public function update(UpdateRequest $request, string $id)
+    public function update(UpdateRequest $request, int $id): JsonResponse
     {
         $menu = $this->menuService->update($id, $request->all());
 
@@ -43,7 +44,7 @@ class MenuController extends Controller
         ]);
     }
 
-    public function destroy(string $id)
+    public function destroy(int $id)
     {
         $this->menuService->destroy($id);
 
