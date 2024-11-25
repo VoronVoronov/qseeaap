@@ -6,6 +6,7 @@ use App\Models\Menu;
 use App\Repository\MenuRepository;
 use App\Services\Base\BaseService;
 use App\Traits\FileS3;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -17,7 +18,7 @@ class MenuService extends BaseService
         protected MenuRepository $menuRepository
     ){}
 
-    public function index()
+    public function index(): Collection
     {
         return $this->menuRepository->getByUser(auth()->user()->getKey());
     }
@@ -34,7 +35,7 @@ class MenuService extends BaseService
         return $this->menuRepository->store($data);
     }
 
-    public function show($id)
+    public function show($id): Menu
     {
         return $this->menuRepository->getByUserAndId(auth()->id(), $id);
     }

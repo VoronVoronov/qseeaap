@@ -16,7 +16,7 @@ trait FileS3
 
     public function deleteS3($path): void
     {
-        $path = explode('media/', $path);
-        Storage::disk('s3')->delete('media/' . $path[1]);
+        Storage::disk('s3')->delete('media/' . $path);
     }
+
 }

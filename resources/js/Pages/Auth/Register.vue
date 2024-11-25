@@ -310,11 +310,11 @@ import { useAuthStore } from '../../stores/authStore'
 import { vMaska } from "maska/vue"
 
 const state = reactive({
-    name: '',
-    phone: '',
-    password: '',
-    password_confirmation: '',
-    agreement: false
+    name: 'Дастан',
+    phone: '77066011100',
+    password: '12345678',
+    password_confirmation: '12345678',
+    agreement: true
 })
 
 const router = useRouter()

@@ -138,12 +138,14 @@ export default {
                     const user = JSON.parse(localStorage.getItem('user'));
                     activate.value = user.is_active;
                 }
+                getUser();
             }
         });
 
         const getUser = async () => {
             loading.value = true;
             await axiosGetRequest('user/me', (response) => {
+                console.log(response)
                 if (response.status && response.status === 401) {
                     localStorage.removeItem('token');
                     router.push({ name: 'login' });

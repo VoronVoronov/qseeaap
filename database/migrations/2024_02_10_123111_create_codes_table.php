@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('codes', function (Blueprint $table) {
             $table->id();
             $table->enum('action', ['register', 'reset_password']);
-            $table->string('code');
-            $table->string('phone');
+            $table->integer('code');
+            $table->bigInteger('phone');
             $table->boolean('is_used')->default(false);
             $table->bigInteger('sms_id')->nullable();
             $table->timestamp('expired_at');

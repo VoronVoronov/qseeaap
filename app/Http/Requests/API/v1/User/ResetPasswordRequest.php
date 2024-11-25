@@ -37,4 +37,11 @@ class ResetPasswordRequest extends FormRequest
             'phone.required' => __('user.phone_required'),
         ];
     }
+
+    public function all($keys = null): array
+    {
+        $data = parent::all($keys);
+        $data['phone'] = preg_replace('/[^0-9]/', '', $data['phone']);
+        return $data;
+    }
 }

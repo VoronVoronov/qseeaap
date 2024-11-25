@@ -12,7 +12,7 @@ const getHeaders = () => ({
 const handleResponse = (promise, json) => {
     promise
         .then((response) => json(response.data))
-        .catch((error) => json(error.response?.data || error));
+        .catch((error) => json(error.response));
 };
 
 const axiosRequest = (url, data, json) => {

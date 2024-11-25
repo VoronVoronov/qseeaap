@@ -18,7 +18,7 @@
                     outlined
                 />
                 <v-img class="mb-5" v-if="menu.preview" :src="menu.preview" width="150" height="150"></v-img>
-                <input type="file" style="display: none" ref="file" @change="onFileChange" />
+                <input type="file" style="display: none" ref="file" accept="image/png, image/jpeg" @change="onFileChange" />
                 <v-btn @click="$refs.file.click()" color="primary">{{ $t('menu.form.logo') }}</v-btn>
             </v-card-text>
             <v-card-actions>

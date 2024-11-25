@@ -33,6 +33,9 @@ class UserController extends Controller
         return $this->sendResponse($this->service->login($request->all()));
     }
 
+    /**
+     * @throws GuzzleException
+     */
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
         return $this->sendResponse($this->service->resetPassword($request->all()));
@@ -43,6 +46,9 @@ class UserController extends Controller
         return $this->sendResponse($this->service->checkCode($request->all()));
     }
 
+    /**
+     * @throws GuzzleException
+     */
     public function sendSms(Request $request): JsonResponse
     {
         return $this->sendResponse($this->service->sendSMS($request->all()));

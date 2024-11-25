@@ -39,4 +39,11 @@ class CheckCodeRequest extends FormRequest
             'code.required' => __('user.code_required'),
         ];
     }
+
+    public function all($keys = null): array
+    {
+        $data = parent::all($keys);
+        $data['phone'] = preg_replace('/[^0-9]/', '', $data['phone']);
+        return $data;
+    }
 }

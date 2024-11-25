@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\API\v1\User;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
@@ -17,15 +18,16 @@ class RegisterRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
             'name' => 'required|string',
-            'phone' => 'required|string|unique:users,phone',
+            'phone' => 'required|integer|unique:users,phone',
             'password' => 'required|string|min:8',
             'password_confirmation' => 'required|same:password',
+            'agreement' => 'required|accepted',
         ];
     }
 
@@ -45,5 +47,12 @@ class RegisterRequest extends FormRequest
             'password_confirmation.required' => __('user.password_confirmation_required'),
             'password_confirmation.same' => __('user.password_confirmation_same'),
         ];
+    }
+
+    public function all($keys = null): array
+    {
+        $data = parent::all($keys);
+        $data['phone'] = preg_replace('/[^0-9]/', '', $data['phone']);
+        return $data;
     }
 }

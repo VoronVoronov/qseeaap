@@ -39,4 +39,11 @@ class LoginRequest extends FormRequest
             'password.required' => __('user.password_required'),
         ];
     }
+
+    public function all($keys = null): array
+    {
+        $data = parent::all($keys);
+        $data['phone'] = preg_replace('/[^0-9]/', '', $data['phone']);
+        return $data;
+    }
 }

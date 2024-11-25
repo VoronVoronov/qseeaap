@@ -25,8 +25,8 @@
 </template>
 
 <script setup lang="ts">
-import {ref, defineProps, onMounted, reactive} from 'vue';
-import { axiosGetRequest, axiosPutRequest } from "../../../utils/helper";
+import {defineProps, onMounted, reactive} from 'vue';
+import { axiosGetRequest, axiosRequest } from "../../../utils/helper";
 import { useAlertStore } from '../../../stores/alertStore';
 import i18n from '../../../i18n/index';
 import { useVuelidate } from '@vuelidate/core'
@@ -39,8 +39,7 @@ const props = defineProps({
     },
 });
 const alertStore = useAlertStore();
-const preview = ref<string | null>(null);
-const file = ref<File | null>(null);
+let selectedFile = reactive<File | null>(null);
 
 interface MenuItem {
     id: number;
@@ -54,8 +53,8 @@ const menu = reactive<MenuItem>({
     id: 0,
     name: '',
     description: '',
-    logo: null,
     preview: null,
+    logo: null,
 });
 
 const rules = {
@@ -71,7 +70,6 @@ const getMenu = () => {
         menu.id = response.data.id;
         menu.name = response.data.name;
         menu.description = response.data.description;
-        menu.logo = null;
         menu.preview = response.data.logo;
     });
 };
@@ -80,14 +78,23 @@ onMounted(() => {
     getMenu();
 });
 
-function onFileChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-        const selectedFile = input.files[0];
-        file.value = selectedFile;
+
+function onFileChange(file: File | Event) {
+
+    if (file instanceof Event) {
+        const input = file.target as HTMLInputElement;
+        if (input.files && input.files.length > 0) {
+            selectedFile = input.files[0];
+        }
+    } else if (file instanceof File) {
+        selectedFile = file;
+    }
+
+    if (selectedFile) {
+        menu.logo = selectedFile;
         const reader = new FileReader();
         reader.onload = (e) => {
-            preview.value = e.target?.result as string;
+            menu.preview = e.target?.result as string;
         };
         reader.readAsDataURL(selectedFile);
     }
@@ -100,12 +107,13 @@ function submit() {
     }
 
     let form = new FormData();
+    form.append('_method', 'PUT');
     form.append('name', menu.name);
     form.append('description', menu.description);
-    if (file.value instanceof File) {
-        form.append('logo', file.value);
+    if (selectedFile instanceof File) {
+        form.append('logo', selectedFile);
     }
-    axiosPutRequest(`user/menu/${props.id}`, form, (response) => {
+    axiosRequest(`user/menu/${props.id}`, form, (response) => {
         if (response.menu && response.menu.id) {
             alertStore.showAlert(i18n.global.t('menu.alert.success_updated'), 'success', 'mdi-check');
         } else {

@@ -16,7 +16,7 @@ class MenuRepository extends BaseRepository
 
     public function getByUser(int $user_id)
     {
-        return Menu::where('user_id', $user_id)->get();
+        return Menu::where('user_id', $user_id)->orderByDesc('id')->get();
     }
 
     public function getByUserAndId($user_id, $id)

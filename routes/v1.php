@@ -4,7 +4,6 @@ use App\Http\Controllers\API\v1\CategoryController;
 use App\Http\Controllers\API\v1\MenuController;
 use App\Http\Controllers\API\v1\ProductController;
 use App\Http\Controllers\API\v1\UserController;
-use Illuminate\Support\Facades\Route;
 
 
 Route::group([

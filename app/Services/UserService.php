@@ -4,13 +4,13 @@ namespace App\Services;
 
 use App\Repository\UserRepository;
 use App\Services\Base\BaseService;
+use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Hash;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-
 use InvalidArgumentException;
+use Str;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
-use function Laravel\Prompts\password;
 
 class UserService extends BaseService
 {
@@ -21,9 +21,13 @@ class UserService extends BaseService
 
     /**
      * @throws GuzzleException
+     * @throws Exception
      */
     public function register(array $data): string
     {
+        unset($data['agreement']);
+        $data['phone'] = preg_replace('/[^0-9]/', '', $data['phone']);
+        $data['is_active'] = false;
         $find = $this->userRepository->findByPhone($data['phone']);
         if($find) {
             throw new ModelNotFoundException(__('user.phone_exists'), ResponseAlias::HTTP_BAD_REQUEST);
@@ -71,6 +75,9 @@ class UserService extends BaseService
         return ['status' => $status, 'message' => __('user.phone_verified')];
     }
 
+    /**
+     * @throws GuzzleException
+     */
     public function sendSMS(array $data): array
     {
         $data['code'] = rand(1000, 9999);
@@ -89,13 +96,16 @@ class UserService extends BaseService
         return $user->tokens()->delete();
     }
 
+    /**
+     * @throws GuzzleException
+     */
     public function resetPassword(array $all): array
     {
         $user = $this->userRepository->findByPhone($all['phone']);
         if(!$user){
             throw new ModelNotFoundException(__('user.not_found'), ResponseAlias::HTTP_BAD_REQUEST);
         }
-        $password = \Str::password(8);
+        $password = Str::password(8);
         $arr = array(
             'phone' => $all['phone'],
             'code' => $password,
