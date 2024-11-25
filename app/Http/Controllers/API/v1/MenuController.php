@@ -15,7 +15,7 @@ class MenuController extends Controller
         protected MenuService $menuService
     ){}
 
-    public function index()
+    public function index(): MenuResource
     {
         return MenuResource::make($this->menuService->index());
     }
@@ -29,7 +29,7 @@ class MenuController extends Controller
         ]);
     }
 
-    public function show(int $id)
+    public function show(int $id): MenuResource
     {
         return MenuResource::make($this->menuService->show($id));
     }
@@ -44,7 +44,7 @@ class MenuController extends Controller
         ]);
     }
 
-    public function destroy(int $id)
+    public function destroy(int $id): JsonResponse
     {
         $this->menuService->destroy($id);
 
