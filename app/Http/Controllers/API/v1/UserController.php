@@ -33,7 +33,7 @@ class UserController extends Controller
         return $this->sendResponse($this->service->login($request->all()));
     }
 
-    public function resetPassword(ResetPasswordRequest $request)
+    public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
         return $this->sendResponse($this->service->resetPassword($request->all()));
     }
@@ -43,7 +43,7 @@ class UserController extends Controller
         return $this->sendResponse($this->service->checkCode($request->all()));
     }
 
-    public function sendSms(Request $request)
+    public function sendSms(Request $request): JsonResponse
     {
         return $this->sendResponse($this->service->sendSMS($request->all()));
     }
@@ -59,7 +59,7 @@ class UserController extends Controller
         return $this->show($request->user());
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
         return $this->sendResponse(['status' => $this->service->logout($request->user())]);
     }

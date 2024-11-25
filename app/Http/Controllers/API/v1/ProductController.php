@@ -9,6 +9,7 @@ use App\Http\Resources\API\v1\ProductResource;
 use App\Repository\ProductRepository;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
 {
@@ -18,13 +19,13 @@ class ProductController extends Controller
         protected ProductRepository $productRepository
     ){}
 
-    public function index(Request $request)
+    public function index(Request $request): ProductResource
     {
         $per_page = $request->get('per_page') ?? 50;
         return ProductResource::make($this->productRepository->setFilter($request->get('filter'))->paginated($per_page))->additional($this->productRepository->getRangeInfo());
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): JsonResponse
     {
         $category = $this->productService->store($request->all());
 
@@ -33,12 +34,12 @@ class ProductController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function show($id): ProductResource
     {
         return ProductResource::make($this->productService->show($id));
     }
 
-    public function update(UpdateRequest $request, $id)
+    public function update(UpdateRequest $request, int $id): JsonResponse
     {
         $category = $this->productService->update($id, $request->all());
 
@@ -48,7 +49,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
         $this->productService->destroy($id);
 

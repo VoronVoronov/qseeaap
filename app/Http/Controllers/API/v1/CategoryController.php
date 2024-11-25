@@ -8,6 +8,7 @@ use App\Http\Requests\API\v1\Category\UpdateRequest;
 use App\Http\Resources\API\v1\CategoryResource;
 use App\Repository\CategoryRepository;
 use App\Services\CategoryService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -18,13 +19,13 @@ class CategoryController extends Controller
         protected CategoryRepository $categoryRepository
     ){}
 
-    public function index(Request $request)
+    public function index(Request $request): CategoryResource
     {
         $per_page = $request->get('per_page') ?? 50;
         return CategoryResource::make($this->categoryRepository->setFilter($request->get('filter'))->paginated($per_page))->additional($this->categoryRepository->getRangeInfo());
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): JsonResponse
     {
         $category = $this->categoryService->store($request->all());
 
@@ -33,12 +34,12 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function show($id): CategoryResource
     {
         return CategoryResource::make($this->categoryService->show($id));
     }
 
-    public function update(UpdateRequest $request, $id)
+    public function update(UpdateRequest $request, int $id): JsonResponse
     {
         $category = $this->categoryService->update($id, $request->all());
 
@@ -48,7 +49,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
         $this->categoryService->destroy($id);
 
