@@ -17,7 +17,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-
+package-lock.json
 # Project exclude paths
 /storage/app/
 /storage/framework/
