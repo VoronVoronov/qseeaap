@@ -21,8 +21,7 @@ jobs:
             git pull origin master
             php composer.phar install --no-interaction --prefer-dist --optimize-autoloader
             nvm use 18
-            npm ci
-            npm run build
+            bash -c "source /home/qsee/.nvm/nvm.sh && nvm use 18 && npm ci && npm run build"
             php artisan migrate --force
             php artisan cache:clear
             php artisan config:clear
