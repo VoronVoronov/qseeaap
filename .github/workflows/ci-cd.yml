@@ -20,7 +20,7 @@ jobs:
             cd /var/www/qsee/qsee.su/
             git pull origin master
             php composer.phar install --no-interaction --prefer-dist --optimize-autoloader
-            nvm use 16
+            nvm use 18
             npm ci
             npm run build
             php artisan migrate --force
