@@ -37,10 +37,11 @@ class UserService extends BaseService
         $data['registered_at'] = now()->toDateTimeString();
         $data['register_ip'] = request()->ip();
         $user = $this->userRepository->create($data);
+        $token = $user->createToken('auth-access-token')->accessToken;
         $data['code'] = rand(1000, 9999);
         $data['message'] = __('user.your_sms_code', ['code' => $data['code']]);
         $this->codeService->sendCode($data);
-        return $user->createToken('auth-access-token')->accessToken;
+        return $token;
     }
 
     public function login(array $data): array
