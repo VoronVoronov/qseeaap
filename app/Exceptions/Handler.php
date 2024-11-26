@@ -30,19 +30,19 @@ class Handler extends ExceptionHandler
         });
     }
 
-//    public function render($request, Throwable $e)
-//    {
-//        $status = Response::HTTP_BAD_REQUEST;
-//        if($e->getCode() > 0) {
-//            $status = $e->getCode();
-//        }
-//        if($request->expectsJson()) {
-//            return response()->json([
-//                'message' => $e->getMessage()
-//            ], $status);
-//        } else {
-//            return response($e->getMessage());
-//        }
-//    }
+    public function render($request, Throwable $e)
+    {
+        $status = Response::HTTP_BAD_REQUEST;
+        if($e->getCode() > 0) {
+            $status = $e->getCode();
+        }
+        if($request->expectsJson()) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], $status);
+        } else {
+            return response($e->getMessage());
+        }
+    }
 
 }
