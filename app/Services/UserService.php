@@ -48,7 +48,7 @@ class UserService extends BaseService
     {
         $user = $this->userRepository->findByPhone($data['phone']);
         if(!$user) {
-            throw new ModelNotFoundException(__('user.not_found'), ResponseAlias::HTTP_BAD_REQUEST);
+            throw new ModelNotFoundException(__('user.not_found'), ResponseAlias::HTTP_NOT_FOUND);
         }
         if (Hash::check($data['password'], $user->getAuthPassword())){
             $user->last_login_at = now()->toDateTimeString();

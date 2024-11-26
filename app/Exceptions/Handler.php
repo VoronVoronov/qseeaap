@@ -41,7 +41,7 @@ class Handler extends ExceptionHandler
                 'message' => $e->getMessage()
             ], $status);
         } else {
-            return response($e->getMessage());
+            return response($e->getMessage(), $status);
         }
     }
 
