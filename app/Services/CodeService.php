@@ -32,7 +32,7 @@ class CodeService extends BaseService
             throw new ModelNotFoundException(__('user.sms_not_sent'), ResponseAlias::HTTP_BAD_REQUEST);
         }
         if($action === 'reset_password'){
-            $data['code'] = 'Password is hashed';
+            $data['code'] = 0;
         }
         $this->codeRepository->create(array(
             'phone' => $data['phone'],

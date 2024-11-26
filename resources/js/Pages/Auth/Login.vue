@@ -19,17 +19,27 @@
                         @input="v$.phone.$touch"
                     />
 
-                    <v-text-field
-                        :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-                        :type="visible ? 'text' : 'password'"
-                        v-model="state.password"
-                        :error-messages="v$.password.$errors.map(e => e.$message)"
-                        :label="$t('auth.form.password')"
-                        required
-                        @blur="v$.password.$touch"
-                        @input="v$.password.$touch"
-                        @click:append-inner="visible = !visible"
-                    />
+                    <div class="password-container">
+                        <v-text-field
+                            :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                            :type="visible ? 'text' : 'password'"
+                            v-model="state.password"
+                            :error-messages="v$.password.$errors.map(e => e.$message)"
+                            :label="$t('auth.form.password')"
+                            required
+                            @blur="v$.password.$touch"
+                            @input="v$.password.$touch"
+                            @click:append-inner="visible = !visible"
+                        ></v-text-field>
+
+                        <router-link
+                            class="forgot-password-link"
+                            :to="{ name: 'restorePassword' }"
+                            rel="noopener noreferrer"
+                        >
+                            {{ $t('auth.form.forgot_password') }}
+                        </router-link>
+                    </div>
 
                     <v-checkbox
                         v-model="state.remember"
@@ -129,4 +139,24 @@ function login(){
             }
         })
 }
+
 </script>
+<style scoped>
+.password-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.forgot-password-link {
+    align-self: flex-end;
+    margin-top: 4px;
+    font-size: 0.875rem;
+    color: #1976D2;
+    text-decoration: none;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
+</style>

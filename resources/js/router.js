@@ -3,6 +3,7 @@ import { useAuthStore } from './stores/authStore';
 import HomeView from './Pages/HomeView.vue';
 import AboutView from './Pages/AboutView.vue';
 import Register from "./Pages/Auth/Register.vue";
+import RestorePassword from "./Pages/Auth/RestorePassword.vue";
 import Login from "./Pages/Auth/Login.vue";
 import Menu from "./Pages/Menu/MenuView.vue";
 import MenuEdit from "./Pages/Menu/MenuEdit.vue";
@@ -36,6 +37,14 @@ const routes = [
         path: '/login',
         name: 'login',
         component: Login,
+        meta: {
+            isAuth: false
+        }
+    },
+    {
+        path: '/restore-password',
+        name: 'restorePassword',
+        component: RestorePassword,
         meta: {
             isAuth: false
         }

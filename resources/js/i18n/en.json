@@ -3,6 +3,7 @@
         "login": "",
         "register": "",
         "logout": "",
+        "restore_password": "",
         "form": {
             "name": "",
             "email": "",
