@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\TariffMenu;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class CheckExpiredTariff extends Command
@@ -19,7 +20,7 @@ class CheckExpiredTariff extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Check expired tariff and change to default tariff';
 
     /**
      * Execute the console command.
@@ -28,13 +29,13 @@ class CheckExpiredTariff extends Command
     {
         $tariffs = TariffMenu::where('no_deadline', 0)->get();
         foreach ($tariffs as $tariff) {
-            if ($tariff->expired_at <= date('Y-m-d H:i:s')) {
-                $tariff->delete();
+            if ($tariff->expired_at <= Carbon::now()) {
                 TariffMenu::create([
                     'menu_id' => $tariff->menu_id,
                     'tariff_id' => 1,
                     'no_deadline' => 1,
                 ]);
+                $tariff->delete();
             }
         }
     }
