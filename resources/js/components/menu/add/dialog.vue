@@ -17,9 +17,16 @@
                     :label="$t('menu.form.description')"
                     outlined
                 />
-                <v-img class="mb-5" v-if="menu.preview" :src="menu.preview" width="150" height="150"></v-img>
+                <div class="image-container">
+                    <v-img v-if="menu.preview" :src="menu.preview" width="150" height="150">
+                        <template v-slot:default>
+                            <div class="overlay" @click="$refs.file.click()">
+                                <v-icon large color="white">mdi-camera</v-icon>
+                            </div>
+                        </template>
+                    </v-img>
+                </div>
                 <input type="file" style="display: none" ref="file" accept="image/png, image/jpeg, image/jpg" @change="onFileChange" />
-                <v-btn @click="$refs.file.click()" color="primary">{{ $t('menu.form.logo') }}</v-btn>
             </v-card-text>
             <v-card-actions>
                 <v-btn color="primary" @click="addMenu">{{ $t("menu.action.create") }}</v-btn>
@@ -54,7 +61,7 @@ const menu = reactive<MenuItem>({
     name: '',
     description: '',
     logo: null,
-    preview: null
+    preview: 'https://placehold.co/150x150'
 });
 
 const rules = {
@@ -113,3 +120,27 @@ function closeAddMenu() {
     emit('showMenuDialog')
 }
 </script>
+<style scoped>
+.image-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+.image-container:hover .overlay {
+    opacity: 1;
+}
+</style>
