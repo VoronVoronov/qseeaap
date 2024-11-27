@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('tariffs', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('price');
+            $table->float('price_one_month');
+            $table->float('price_three_month');
+            $table->float('price_six_month');
+            $table->float('price_one_year');
             $table->integer('status')->default(1);
             $table->timestamps();
         });

@@ -61,7 +61,8 @@
         "tab": {
             "mainSettings": "",
             "categories": "",
-            "products": ""
+            "products": "",
+            "tariffTab": ""
         }
     }
 }

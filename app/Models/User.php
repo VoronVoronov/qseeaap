@@ -50,4 +50,8 @@ class User extends Authenticatable
         'phone_verified_at' => 'datetime',
     ];
 
+    public function menu(){
+        return $this->hasMany(Menu::class);
+    }
+
 }

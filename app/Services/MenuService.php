@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Menu;
 use App\Repository\MenuRepository;
+use App\Repository\TariffMenuRepository;
 use App\Services\Base\BaseService;
 use App\Traits\FileS3;
 use Illuminate\Database\Eloquent\Collection;
@@ -15,7 +16,8 @@ class MenuService extends BaseService
 {
     use FileS3;
     public function __construct(
-        protected MenuRepository $menuRepository
+        protected MenuRepository $menuRepository,
+        protected TariffMenuRepository $tariffMenuRepository
     ){}
 
     public function index(): Collection
@@ -32,7 +34,13 @@ class MenuService extends BaseService
             $data['banner'] = $this->uploadS3($data['banner'], 'banner');
         }
         $data['user_id'] = auth()->id();
-        return $this->menuRepository->store($data);
+        $menu = $this->menuRepository->store($data);
+        $this->tariffMenuRepository->create([
+            'menu_id' => $menu->id,
+            'tariff_id' => 1,
+            'no_deadline' => 1,
+        ]);
+        return $menu;
     }
 
     public function show($id): Menu

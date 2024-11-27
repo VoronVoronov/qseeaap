@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Storage;
-use Carbon\Carbon;
+use Spatie\Translatable\HasTranslations;
 
 class Menu extends Model
 {
+    use HasTranslations;
+    public $translatable = ['name', 'description', 'address', 'work_time'];
 
     protected $fillable = [
-        'tariff_id',
         'user_id',
         'name',
         'slug',
@@ -22,6 +22,8 @@ class Menu extends Model
         'logo',
         'banner'
     ];
+
+    protected $appends = ['tariff_id'];
 
     public function getLogoAttribute($value)
     {
@@ -45,11 +47,16 @@ class Menu extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function tariff()
+    public function tariffs()
     {
-        return $this->belongsTo(Tariff::class);
+        return $this->belongsToMany(Tariff::class, 'tariff_menus');
+    }
+
+    public function getTariffIdAttribute()
+    {
+        return $this->tariffs()->latest('tariff_menus.created_at')->first()->id ?? null;
     }
 }

@@ -79,7 +79,8 @@
         "tab": {
             "mainSettings": "Основные настройки",
             "categories": "Категории",
-            "products": "Продукты"
+            "products": "Продукты",
+            "tariffTab": "Тариф"
         }
     }
 }

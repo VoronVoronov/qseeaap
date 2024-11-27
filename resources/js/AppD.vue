@@ -145,8 +145,7 @@ export default {
         const getUser = async () => {
             loading.value = true;
             await axiosGetRequest('user/me', (response) => {
-                console.log(response)
-                if (response.status && response.status === 401) {
+                if (response.status && response.status === 401 || response.status === 400) {
                     localStorage.removeItem('token');
                     router.push({ name: 'login' });
                     authStore.logout();

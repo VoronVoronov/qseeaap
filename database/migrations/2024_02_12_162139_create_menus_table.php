@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            $table->integer('tariff_id')->default(0);
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->string('name');
             $table->string('slug')->unique();

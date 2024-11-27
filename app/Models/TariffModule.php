@@ -4,13 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
 class TariffModule extends Model
 {
-    protected $fillable = ['tariff_id', 'name', 'code'];
+    use HasTranslations;
+    public $translatable = ['name'];
+    protected $fillable = ['name', 'code'];
 
-    public function tariff()
+    public function access()
     {
-        return $this->belongsTo(Tariff::class);
+        return $this->hasMany(TariffAccess::class);
     }
 }

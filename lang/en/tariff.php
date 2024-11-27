@@ -6,4 +6,5 @@ return [
     'price_required' => '',
     'updated' => '',
     'deleted' => '',
+    'not_found' => '',
 ];

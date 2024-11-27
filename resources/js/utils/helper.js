@@ -2,7 +2,7 @@ import axios from 'axios';
 import router from '../router';
 import i18n from '../i18n';
 
-const url_api = 'https://qsee.su/api/v1/';
+const url_api = 'http://localhost:8000/api/v1/';
 
 const getHeaders = () => ({
     Authorization: `Bearer ${localStorage.getItem('token')}`,

@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\v1\CategoryController;
 use App\Http\Controllers\API\v1\MenuController;
 use App\Http\Controllers\API\v1\ProductController;
+use App\Http\Controllers\API\v1\TariffController;
 use App\Http\Controllers\API\v1\UserController;
 
 
@@ -18,11 +19,14 @@ Route::group([
         Route::post('logout', [UserController::class, 'logout']);
         Route::get('me', [UserController::class, 'getUser'])->name('getUser');
         Route::middleware(['check.active'])->group(function () {
-            Route::apiResources([
-                'menu' => MenuController::class,
-                'category' => CategoryController::class,
-                'product' => ProductController::class,
-            ]);
+            Route::apiResource('menu', MenuController::class);
+            Route::get('tariff', [TariffController::class, 'index']);
+            Route::middleware(['check.tariff.access'])->group(function () {
+                Route::apiResources([
+                    'category' => CategoryController::class,
+                    'product' => ProductController::class,
+                ]);
+            });
         });
     });
 });

@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tariff_modules', function (Blueprint $table) {
+        Schema::create('tariff_menus', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('code');
+            $table->foreignId('tariff_id')->constrained('tariffs')->cascadeOnDelete();
+            $table->foreignId('menu_id')->constrained('menus')->cascadeOnDelete();
+            $table->integer('no_deadline')->default(0);
+            $table->dateTime('expired_at')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tariff_modules');
+        Schema::dropIfExists('tariff_menus');
     }
 };

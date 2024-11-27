@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\v1\Menu\StoreRequest;
 use App\Http\Requests\API\v1\Menu\UpdateRequest;
 use App\Http\Resources\API\v1\MenuResource;
+use App\Http\Resources\API\v1\Collection\MenuResourceCollection;
 use App\Services\MenuService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -15,9 +16,9 @@ class MenuController extends Controller
         protected MenuService $menuService
     ){}
 
-    public function index(): MenuResource
+    public function index(): MenuResourceCollection
     {
-        return MenuResource::make($this->menuService->index());
+        return MenuResourceCollection::make($this->menuService->index());
     }
 
     public function store(StoreRequest $request): JsonResponse

@@ -4,6 +4,7 @@ namespace App\Http\Resources\API\v1;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\TariffModule;
 
 class TariffResource extends JsonResource
 {
@@ -14,14 +15,16 @@ class TariffResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return array_merge(parent::toArray($request), [
-            'modules' => $this->modules->map(function ($module) {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'price' => $this->price_one_month,
+            'features' => TariffModule::all()->map(function ($module) {
                 return [
-                    'id' => $module->id,
                     'name' => $module->name,
-                    'code' => $module->code,
+                    'included' => $module->access->where('tariff_id', $this->id)->count(),
                 ];
             }),
-        ]);
+        ];
     }
 }

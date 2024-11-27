@@ -25,10 +25,12 @@ class RefreshApp extends Command
      */
     public function handle()
     {
+        $this->call('cache:clear');
         $this->call('migrate:refresh');
         $this->call('passport:install');
         $this->call('config:cache');
         $this->call('route:cache');
         $this->call('view:cache');
+        $this->call('db:seed');
     }
 }

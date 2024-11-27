@@ -24,13 +24,15 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import mainSettings from '../../components/menu/edit/mainSettings.vue';
+import mainSettings from '../../components/menu/edit/mainSettingsTab.vue';
+import tariffTab from '../../components/menu/edit/tariffTab.vue';
 import i18n from '../../i18n/index';
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const tabs = ref([
     { name: 'mainSettings', title: i18n.global.t("menu.tab.mainSettings"), component: mainSettings },
+    { name: 'tariffTab', title: i18n.global.t("menu.tab.tariffTab"), component: tariffTab },
 ]);
 
 const tab = ref('one');
