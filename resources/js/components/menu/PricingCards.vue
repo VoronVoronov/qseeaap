@@ -159,7 +159,7 @@ function buy(id: number) {
     widget.pay(
         'auth',
         {
-            publicId: '',
+            publicId: 'pk_246ec9bec531525522dc041e98351',
             description: `Оплата тарифа ${plan.name} на ${getPeriodLabel()}`,
             amount: totalAmount,
             currency: 'KZT',

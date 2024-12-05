@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class CodeService extends BaseService
 {
+    #TODO перенести функцию смс в сервис
     use SMS;
     public function __construct(
         protected CodeRepository $codeRepository,
@@ -34,13 +35,13 @@ class CodeService extends BaseService
         if($action === 'reset_password'){
             $data['code'] = 0;
         }
-        $this->codeRepository->create(array(
+        $this->codeRepository->create([
             'phone' => $data['phone'],
             'code' => $data['code'],
             'expired_at' => Carbon::now()->addMinutes(5),
             'sms_id' => $id,
             'action' => $action,
-        ));
+        ]);
         return $id;
     }
 

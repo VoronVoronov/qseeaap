@@ -1,44 +1,56 @@
 <template>
-    <v-text-field
-        :label="$t('menu.form.name')"
-        v-model="menu.name"
-        @blur="v$.name.$touch"
-        @input="v$.name.$touch"
-        :error-messages="v$.name.$errors.map(e => e.$message)"
-    ></v-text-field>
+    <div class="layout-container">
+        <div class="form-container">
+            <v-text-field
+                :label="$t('menu.form.name')"
+                v-model="menu.name"
+                @blur="v$.name.$touch"
+                @input="v$.name.$touch"
+                :error-messages="v$.name.$errors.map(e => e.$message)"
+            ></v-text-field>
 
-    <v-textarea
-        v-model="menu.description"
-        :label="$t('menu.form.description')"
-    />
-    <div class="image-container">
-        <v-img class="mb-5" :src="menu.preview" width="150" height="150">
-            <template v-slot:default>
-                <div class="overlay" @click="$refs.file.click()">
-                    <v-icon large color="white">mdi-camera</v-icon>
-                </div>
-            </template>
-        </v-img>
-    </div>
-    <input type="file" style="display: none" ref="file" @change="onFileChange" />
-    <div class="button-group">
-        <v-btn
-            @click="submit"
-            color="primary"
-        >
-            {{ $t('menu.action.save') }}
-        </v-btn>
+            <v-textarea
+                v-model="menu.description"
+                :label="$t('menu.form.description')"
+            />
+
+            <div class="image-container">
+                <v-img class="mb-5" :src="menu.preview" width="150" height="150">
+                    <template v-slot:default>
+                        <div class="overlay" @click="$refs.file.click()">
+                            <v-icon large color="white">mdi-camera</v-icon>
+                        </div>
+                    </template>
+                </v-img>
+            </div>
+
+            <input type="file" style="display: none" ref="file" @change="onFileChange" />
+
+            <div class="button-group">
+                <v-btn
+                    @click="submit"
+                    color="primary"
+                    small
+                >
+                    {{ $t('menu.action.save') }}
+                </v-btn>
+            </div>
+        </div>
+
+<!--        <div class="iframe-container">-->
+<!--            <iframe src="https://qsee.kz" class="iphone-frame"></iframe>-->
+<!--        </div>-->
     </div>
 </template>
 
 <script setup lang="ts">
-import {defineProps, onMounted, reactive} from 'vue';
+import { defineProps, onMounted, reactive } from 'vue';
 import { axiosGetRequest, axiosRequest } from "../../../utils/helper";
 import { useAlertStore } from '../../../stores/alertStore';
 import { useCurrentMenuStore } from '../../../stores/currentMenuStore';
 import i18n from '../../../i18n/index';
-import { useVuelidate } from '@vuelidate/core'
-import { Required } from '../../../utils/validator'
+import { useVuelidate } from '@vuelidate/core';
+import { Required } from '../../../utils/validator';
 
 const props = defineProps({
     id: {
@@ -55,14 +67,14 @@ interface MenuItem {
     name: string;
     description: string;
     logo?: File | null;
-    preview?: string | null;
+    preview?: string;
 }
 
 const menu = reactive<MenuItem>({
     id: 0,
     name: '',
     description: '',
-    preview: null,
+    preview: 'https://placehold.co/150x150',
     logo: null,
 });
 
@@ -70,9 +82,9 @@ const rules = {
     name: {
         Required
     }
-}
+};
 
-const v$ = useVuelidate(rules, menu)
+const v$ = useVuelidate(rules, menu);
 
 const getMenu = () => {
     axiosGetRequest(`user/menu/${props.id}`, (response) => {
@@ -89,7 +101,6 @@ onMounted(() => {
 });
 
 function onFileChange(file: File | Event) {
-
     if (file instanceof Event) {
         const input = file.target as HTMLInputElement;
         if (input.files && input.files.length > 0) {
@@ -111,8 +122,8 @@ function onFileChange(file: File | Event) {
 
 function submit() {
     if (v$.value.$invalid) {
-        v$.value.$touch()
-        return
+        v$.value.$touch();
+        return;
     }
 
     let form = new FormData();
@@ -126,28 +137,57 @@ function submit() {
         if (response.menu && response.menu.id) {
             getMenu();
             alertStore.showAlert(i18n.global.t('menu.alert.success_updated'), 'success', 'mdi-check');
-        }else if(response.message){
+        } else if (response.message) {
             alertStore.showAlert(response.message, 'error', 'mdi-alert');
         } else {
             alertStore.showAlert(i18n.global.t('menu.alert.error_updated'), 'error', 'mdi-alert');
         }
     });
 }
-
 </script>
 
 <style scoped>
+.layout-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+
+.form-container {
+    flex: 1;
+}
+
+.iframe-container {
+    flex: 0 0 375px;
+    height: 667px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.iphone-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
 .button-group {
-    margin-top: 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
 }
+
 .image-container {
     position: relative;
     width: 150px;
     height: 150px;
 }
+
 .overlay {
     position: absolute;
     top: 0;
@@ -162,7 +202,29 @@ function submit() {
     transition: opacity 0.3s ease;
     cursor: pointer;
 }
+
 .image-container:hover .overlay {
     opacity: 1;
+}
+
+@media screen and (max-width: 992px) {
+    .layout-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .form-container {
+        width: 100%;
+    }
+
+    .iframe-container {
+        width: 100%;
+        height: 400px;
+    }
+
+    .button-group{
+        bottom: 10px;
+    }
+
 }
 </style>
